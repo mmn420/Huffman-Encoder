@@ -1,3 +1,5 @@
+#ifndef PGMB_IO_V2
+#define PGMB_IO_V2
 /*
 0000000000000000000000000010101111110100000000000000000000000000
 0000000000000000000000101110101010010111110000000000000000000000
@@ -66,12 +68,13 @@ TODO:THIS VERSION IS DEVELOPED, REVISED & TESTED BY GeekMind2000
 */
 // TODO: Change functions' names to be more self-describing, Edit documentation, Create a namespace for Utility functions & enhance it.
 #include <bits/stdc++.h>
+#include "utility.hpp"
 using namespace std;
 //  Function Declarations
 //****************************************************************************80
 bool pgmb_check_data(int xsize, int ysize, unsigned char maxg, vector<int> &data);
 //****************************************************************************80
-bool pgmb_read(string input_name, int &xsize, int &ysize, unsigned char &maxg, vector<int> &data);
+bool pgmb_read(string input_name, pgm &pic);
 bool pgmb_read_data(ifstream &input, int xsize, int ysize, vector<int> &data);
 bool pgmb_read_header(ifstream &file_in, int &xsize, int &ysize, unsigned char &maxg);
 //****************************************************************************80
@@ -85,47 +88,6 @@ void s_word_extract_first(string s, string &s1, string &s2);
 char ch_cap(char ch);
 
 //****************************************************************************80
-
-char ch_cap(char ch)
-
-//****************************************************************************80
-//
-//  Purpose:
-//
-//    CH_CAP capitalizes a single character.
-//
-//  Discussion:
-//
-//    This routine should be equivalent to the library "toupper" function.
-//
-//  Licensing:
-//
-//    This code is distributed under the GNU LGPL license.
-//
-//  Modified:
-//
-//    19 July 1998
-//
-//  Author:
-//
-//    John Burkardt
-//
-//  Parameters:
-//
-//    Input, char CH, the character to capitalize.
-//
-//    Output, char CH_CAP, the capitalized character.
-//
-{
-    if (97 <= ch && ch <= 122)
-    {
-        ch = ch - 32;
-    }
-
-    return ch;
-}
-//****************************************************************************80
-
 bool pgmb_check_data(int xsize, int ysize, unsigned char maxg,
                      vector<int> &data)
 
@@ -210,8 +172,7 @@ bool pgmb_check_data(int xsize, int ysize, unsigned char maxg,
 }
 //****************************************************************************80
 
-bool pgmb_read(string input_name, int &xsize, int &ysize,
-               unsigned char &maxg, vector<int> &data) //TODO : make maxg an int instead of UC
+bool pgmb_read(string input_name, pgm &pic) //TODO : make maxg an int instead of UC
 
 //****************************************************************************80
 //
@@ -266,7 +227,7 @@ bool pgmb_read(string input_name, int &xsize, int &ysize,
     //
     //  Read the header.
     //
-    error = pgmb_read_header(input, xsize, ysize, maxg);
+    error = pgmb_read_header(input, pic.xsize, pic.ysize, pic.maxg);
 
     if (error)
     {
@@ -278,7 +239,7 @@ bool pgmb_read(string input_name, int &xsize, int &ysize,
     //
     //  Read the data.
     //
-    error = pgmb_read_data(input, xsize, ysize, data);
+    error = pgmb_read_data(input, pic.xsize, pic.ysize, pic.data);
 
     if (error)
     {
@@ -610,10 +571,10 @@ bool pgmb_write_data(ofstream &output, int xsize, int ysize,
     int i;
     for (i = 0; i < data.size(); i++)
     {
-       c=(unsigned char) data[i]; // TODO: why bitset<8> doesn't work like char.
+        c = (unsigned char)data[i]; // TODO: why bitset<8> doesn't work like char.
         output << c;
     }
-    output<<endl;
+    output << endl;
 
     return false;
 }
@@ -866,3 +827,43 @@ void s_word_extract_first(string s, string &s1, string &s2)
 
     return;
 }
+//****************************************************************************80
+char ch_cap(char ch)
+//****************************************************************************80
+//
+//  Purpose:
+//
+//    CH_CAP capitalizes a single character.
+//
+//  Discussion:
+//
+//    This routine should be equivalent to the library "toupper" function.
+//
+//  Licensing:
+//
+//    This code is distributed under the GNU LGPL license.
+//
+//  Modified:
+//
+//    19 July 1998
+//
+//  Author:
+//
+//    John Burkardt
+//
+//  Parameters:
+//
+//    Input, char CH, the character to capitalize.
+//
+//    Output, char CH_CAP, the capitalized character.
+//
+{
+    if (97 <= ch && ch <= 122)
+    {
+        ch = ch - 32;
+    }
+
+    return ch;
+}
+//****************************************************************************80
+#endif
