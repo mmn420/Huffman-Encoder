@@ -16,8 +16,7 @@ buildFreqTable( pic.data, frequencyTable);
     Huffman compressor;
     
     auto codes = compressor.Encode(frequencyTable);
-
-    for (auto &x : codes)
-        std::cout << x.first << ": " << x.second << '\n';
+   for (auto &x : codes)
+        cout << x.first << ": " << x.second << '\n';
     return 0;
 }

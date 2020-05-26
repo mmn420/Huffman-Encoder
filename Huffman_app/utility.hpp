@@ -8,7 +8,7 @@ struct pgm
     unsigned char maxg;
     vector<int> data;
 };
-//********************************************
+//*****************************************************************************
 void buildFreqTable(vector<int> data, unordered_map<int, int> &frequencyTable)
 {
     for (int i = 0; i < data.size(); ++i)
