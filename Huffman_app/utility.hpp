@@ -16,7 +16,7 @@ struct pgm
 //
 //      struct pgm holds all the contents of a pgm file: header and pixel data.
 //
-//    Members
+//    Members:
 //
 //      int xsize,ysize , are the height and width of the picture.
 //
