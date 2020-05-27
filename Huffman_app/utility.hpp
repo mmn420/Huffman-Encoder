@@ -46,6 +46,14 @@ void buildFreqTable(vector<int> data, unordered_map<int, int> &frequencyTable)
         frequencyTable[data[i]]++;
 }
 //*****************************************************************************
+void serializePgm(pgm pic, unordered_map<int, string> codes, string fileName)
+{
+}
+//*****************************************************************************
+void serializeFreq(unordered_map<int, int> frequencyTable, string fileName)
+{
+}
+//*****************************************************************************
 bool s_eqi(string s1, string s2)
 //
 //  Purpose:
