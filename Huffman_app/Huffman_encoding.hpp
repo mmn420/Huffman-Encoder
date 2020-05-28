@@ -73,5 +73,35 @@ public:
 
         return codes;
     }
+    private:
+    unordered_map <string,int> inverseDict (unordered_map <int,string> dict) // to invert the huffman code hashmap
+    {   
+        unordered_map<string,int> invDic;
+        for (auto &x : dict)
+        {
+            invDic[x.second] = x.first;
+        }
+        return invDic;
+    }
+    public:
+    vector<int> Decode (string encodedStream, unordered_map<int,string> Dict) // We save the decoded string in a vector to reverse the compression
+    {
+        unordered_map<string,int> InvDict = inverseDict(Dict); // To get the inverted codes map
+        vector<int> Image; // We will accumulate the original image sequence in this vector
+        string Code; // We will use this string for comparisons
+         int i =0; 
+        while( i<encodedStream.size()) //To operate on all of the encoded string
+         {
+             Code+= encodedStream[i]
+             if (InvDict.count(Code)) //if the string matches one of the codes in the hashmap
+             {
+             Image.push_back(InvDict[Code]); // We push the original value of the code in the accumulation vector
+             Code="";
+             i++;
+             }
+             else
+             i++;
+        }
+    }
 };
 #endif
