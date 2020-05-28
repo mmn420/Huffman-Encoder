@@ -35,7 +35,7 @@ private:
 
         if (head->left == nullptr && head->right == nullptr)
             codes[head->symbol] = code;
-    }
+        }
 
     struct PriorityQueueComparator
     {
