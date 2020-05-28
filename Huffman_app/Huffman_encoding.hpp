@@ -10,7 +10,7 @@ public:
     int symbol;
     Node *left;
     Node *right;
-    Node(int symbol, int frequency, Node *left, Node *right)
+    Node(int symbol, int frequency, Node *left, Node *right) //constructor
     {
         this->frequency = frequency;
         this->symbol = symbol;
@@ -22,26 +22,26 @@ class Huffman
 {
 private:
     unordered_map<int, string> codes;
-    void TraverseTree(Node *head, string code)
+    void TraverseTree(Node *head, string code) //recursive function to traverse the tree to get the codes
     {
-        if (head == nullptr)
+        if (head == nullptr) //if the tree is empty
             return;
 
-        if (head->left != nullptr)
+        if (head->left != nullptr) //if the node has left child
             TraverseTree(head->left, code + "0");
 
-        if (head->right != nullptr)
+        if (head->right != nullptr) //if the node has right child
             TraverseTree(head->right, code + "1");
 
-        if (head->left == nullptr && head->right == nullptr)
-            codes[head->symbol] = code;
+        if (head->left == nullptr && head->right == nullptr) //if the node is a leaf,has no children
+            codes[head->symbol] = code; 
         }
 
     struct PriorityQueueComparator
     {
         bool operator()(Node *const &p1, Node *const &p2)
         {
-            return p1->frequency > p2->frequency;
+            return p1->frequency > p2->frequency; //to compare between frequencies
         }
     };
 
@@ -56,17 +56,17 @@ public:
             Nodes.push(temp);
         }
 
-        while (Nodes.size() > 1)
+        while (Nodes.size() > 1) //while the queue contains more than one node
         {
-            auto min1 = Nodes.top();
+            auto min1 = Nodes.top(); //to store the first small frequency
+            Nodes.pop(); //to remove this element from the queue
+            auto min2 = Nodes.top(); //to store the second small frequency
             Nodes.pop();
-            auto min2 = Nodes.top();
-            Nodes.pop();
-            auto NewNode = new Node(0, min1->frequency + min2->frequency, min1, min2);
-            Nodes.push(NewNode);
+            auto NewNode = new Node(0, min1->frequency + min2->frequency, min1, min2); //make new node and let the two elements with the smallest frequencies be the children of this node and its frequency is the sum of the frequencies of the children
+            Nodes.push(NewNode); //insert the new node in the queue
         }
 
-        auto headNode = Nodes.top();
+        auto headNode = Nodes.top(); //the last node that remains in the queue will be the head of the tree
         Nodes.pop();
 
         TraverseTree(headNode, "0");
