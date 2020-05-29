@@ -5,7 +5,7 @@
 using namespace std;
 int main()
 {
-    string input_name = "NORMAL2-IM-1440-0001.pgm", output_name = "NORMAL2-IM-1427-0001.pgm", encoded_pgm = "yarab",freq_table="yarabb";
+    string input_name = "NORMAL2-IM-1440-0001.pgm", output_name = "NORMAL2-IM-1427-0001.pgm", encoded_pgm = "encoded_pgm.txt",freq_table="yarabb";
     pgm pic;
     cout << pgmb_read(input_name, pic) << " ERRORS,SUCCESSFUL READ <3" << endl;
     //  cout<< pgmb_write(output_name, pic);
@@ -15,6 +15,7 @@ int main()
     buildFreqTable(pic.data, frequencyTable);
     Huffman compressor;
     auto codes = compressor.Encode(frequencyTable);
+    serializePgm(pic,codes,encoded_pgm);
   /*for (auto &x : codes)
         cout << x.first << ": " << x.second << '\n';*/
 

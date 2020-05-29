@@ -48,6 +48,93 @@ void buildFreqTable(vector<int> data, unordered_map<int, int> &frequencyTable)
 //*****************************************************************************
 void serializePgm(pgm pic, unordered_map<int, string> codes, string fileName)
 {
+    string eight_bits = "";
+    int padding_bits = 0;
+    string eight_temp = "";
+    int integer_bits = 0;
+    char output_bits;
+    ofstream serialize;
+
+    serialize.open(fileName);
+
+    if (!serialize.is_open())
+    {
+        cout << "FILE DID NOT OPEN PROPERLY" << endl;
+        return;
+    }
+
+    // serialize the height and width in 4 bytes
+    bitset<32> header_xsize(pic.xsize);
+    bitset<32> header_ysize(pic.ysize);
+    string h_xsize = header_xsize.to_string();
+    string h_ysize = header_ysize.to_string();
+    string temp_x = "", temp_y = "", final_x = "", final_y = "";
+
+    for (int i = 0; i < 32; ++i)
+    {
+        temp_x += h_xsize[i];
+        temp_y += h_ysize[i];
+        if ((i + 1) % 8 == 0)
+        {
+            integer_bits = stoi(temp_x);
+            final_x += char(integer_bits);
+            integer_bits = stoi(temp_y);
+            final_y += char(integer_bits);
+            temp_x.clear();
+            temp_y.clear();
+        }
+    }
+    for (int i = 0; i < 4; ++i)
+        serialize.put(final_x[i]);
+    for (int i = 0; i < 4; ++i)
+        serialize.put(final_y[i]);
+    //serialize the max gray value in 1 byte
+    bitset<8> maxg_binary(pic.maxg);
+    string max_value = maxg_binary.to_string();
+    integer_bits = stoi(max_value);
+    output_bits = (char)integer_bits;
+    serialize.put(output_bits);
+    // SERIALIZING PIXELS' DATA.
+    for (int i = 0; i < pic.data.size(); ++i)
+    {
+        eight_bits.append(codes[pic.data[i]]); //TODO OPTIMIZE, space complexity: HIGH
+
+        if (i == pic.data.size() - 1)
+        {
+            padding_bits = 8 - codes[pic.data[i]].size();
+            if (padding_bits != 0) //saving the number of the padding bits in the beginning of the data  
+            {
+                bitset<8> padding_binary(padding_bits);
+                string padding = padding_binary.to_string();
+                integer_bits = stoi(padding);
+                output_bits = (char)integer_bits;
+                serialize.put(output_bits);
+            }
+        }
+    }
+
+    for (int i = 0; i < eight_bits.size(); ++i)
+    {
+
+        eight_temp += eight_bits[i];
+        if ((i + 1) % 8 == 0)
+        {
+            integer_bits = stoi(eight_temp);
+            output_bits = (char)integer_bits;
+            serialize.put(output_bits);
+            eight_temp.clear();
+        }
+        if (padding_bits != 0 && i == eight_bits.size() - 1)
+        {
+            while (padding_bits--)
+                eight_temp += "0";
+
+            integer_bits = stoi(eight_temp);
+            output_bits = (char)integer_bits;
+            serialize.put(output_bits);
+        }
+    }
+    serialize.close();
 }
 //*****************************************************************************
 void serializeFreq(unordered_map<int, int> frequencyTable, string fileName)
