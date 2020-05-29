@@ -78,7 +78,7 @@ public:
         auto headNode = Nodes.top(); //the last node that remains in the queue will be the head of the tree
         Nodes.pop();
 
-        TraverseTree(headNode, "0");
+        TraverseTree(headNode, "");
 
         return codes;
     }
