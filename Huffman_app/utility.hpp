@@ -88,7 +88,7 @@ void serializePgm(pgm pic, unordered_map<int, string> codes, string fileName)
         serialize.put(final_x[i]);
     for (int i = 0; i < 4; ++i)
         serialize.put(final_y[i]);
-    //serialize the max gray value in 1 byte
+    //serialize the max gray value in 1 byte.
     bitset<8> maxg_binary(pic.maxg);
     string max_value = maxg_binary.to_string();
     integer_bits = stoi(max_value);
@@ -96,12 +96,9 @@ void serializePgm(pgm pic, unordered_map<int, string> codes, string fileName)
     serialize.put(output_bits);
     // SERIALIZING PIXELS' DATA.
     for (int i = 0; i < pic.data.size(); ++i)
-    {
         eight_bits.append(codes[pic.data[i]]); //TODO OPTIMIZE, space complexity: HIGH
-
-        if (i == pic.data.size() - 1)
-        {
-            padding_bits = 8 - codes[pic.data[i]].size();
+     //determinning the padding bits and writing it in the beginning of the data.
+            padding_bits = (eight_bits.size())%8;
             if (padding_bits != 0) //saving the number of the padding bits in the beginning of the data  
             {
                 bitset<8> padding_binary(padding_bits);
@@ -110,12 +107,9 @@ void serializePgm(pgm pic, unordered_map<int, string> codes, string fileName)
                 output_bits = (char)integer_bits;
                 serialize.put(output_bits);
             }
-        }
-    }
-
+        
     for (int i = 0; i < eight_bits.size(); ++i)
     {
-
         eight_temp += eight_bits[i];
         if ((i + 1) % 8 == 0)
         {
