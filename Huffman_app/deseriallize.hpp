@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-void Deseriallize_pgm(string readFile)
+void deseriallizePgm(string readFile)
 {
     ifstream deseriallize;
     deseriallize.open(readFile);

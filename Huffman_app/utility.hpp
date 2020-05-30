@@ -76,9 +76,9 @@ void serializePgm(pgm pic, unordered_map<int, string> codes, string fileName)
         temp_y += h_ysize[i];
         if ((i + 1) % 8 == 0)
         {
-            integer_bits = stoi(temp_x,0,2);
+            integer_bits = stoi(temp_x, 0, 2);
             final_x += char(integer_bits);
-            integer_bits = stoi(temp_y,0,2);
+            integer_bits = stoi(temp_y, 0, 2);
             final_y += char(integer_bits);
             temp_x.clear();
             temp_y.clear();
@@ -91,29 +91,29 @@ void serializePgm(pgm pic, unordered_map<int, string> codes, string fileName)
     //serialize the max gray value in 1 byte.
     bitset<8> maxg_binary(pic.maxg);
     string max_value = maxg_binary.to_string();
-    integer_bits = stoi(max_value,0,2);
+    integer_bits = stoi(max_value, 0, 2);
     output_bits = (char)integer_bits;
     serialize.put(output_bits);
     // SERIALIZING PIXELS' DATA.
     for (int i = 0; i < pic.data.size(); ++i)
         eight_bits.append(codes[pic.data[i]]); //TODO OPTIMIZE, space complexity: HIGH
-     //determinning the padding bits and writing it in the beginning of the data.
-            padding_bits = (eight_bits.size())%8;
-            if (padding_bits != 0) //saving the number of the padding bits in the beginning of the data  
-            {
-                bitset<8> padding_binary(padding_bits);
-                string padding = padding_binary.to_string();
-                integer_bits = stoi(padding,0,2);
-                output_bits = (char)integer_bits;
-                serialize.put(output_bits);
-            }
-        
+                                               //determinning the padding bits and writing it in the beginning of the data.
+    padding_bits = (eight_bits.size()) % 8;
+    if (padding_bits != 0) //saving the number of the padding bits in the beginning of the data
+    {
+        bitset<8> padding_binary(padding_bits);
+        string padding = padding_binary.to_string();
+        integer_bits = stoi(padding, 0, 2);
+        output_bits = (char)integer_bits;
+        serialize.put(output_bits);
+    }
+
     for (int i = 0; i < eight_bits.size(); ++i)
     {
         eight_temp += eight_bits[i];
         if ((i + 1) % 8 == 0)
         {
-            integer_bits = stoi(eight_temp,0,2);
+            integer_bits = stoi(eight_temp, 0, 2);
             output_bits = (char)integer_bits;
             serialize.put(output_bits);
             eight_temp.clear();
@@ -123,7 +123,7 @@ void serializePgm(pgm pic, unordered_map<int, string> codes, string fileName)
             while (padding_bits--)
                 eight_temp += "0";
 
-            integer_bits = stoi(eight_temp,0,2);
+            integer_bits = stoi(eight_temp, 0, 2);
             output_bits = (char)integer_bits;
             serialize.put(output_bits);
         }
@@ -133,6 +133,34 @@ void serializePgm(pgm pic, unordered_map<int, string> codes, string fileName)
 //*****************************************************************************
 void serializeFreq(unordered_map<int, int> frequencyTable, string fileName)
 {
+    ofstream output;
+    output.open(fileName);
+    if (!output.is_open())
+    {
+        cout << "FILE DID NOT OPEN PROPERLY" << endl;
+        return;
+    }
+
+    string temp_freq = "", final_freq = "", string_freq = "";
+    int integer_bits = 0;
+    for (int i = 0; i < 256; ++i)
+    {
+        bitset<32> freq(frequencyTable[i]);
+        string_freq = freq.to_string();
+
+        for (int i = 0; i < 32; ++i)
+        {
+            temp_freq += string_freq[i];
+
+            if ((i + 1) % 8 == 0)
+            {
+                integer_bits = stoi(temp_freq, 0, 2);
+                output.put(char(integer_bits));
+                temp_freq.clear();
+            }
+        }
+    }
+    output.close();
 }
 //*****************************************************************************
 bool s_eqi(string s1, string s2)
