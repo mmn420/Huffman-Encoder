@@ -6,11 +6,7 @@
 using namespace std;
 int main()
 {
-<<<<<<< HEAD
-    string input_name = "NORMAL2-IM-1440-0001.pgm", output_name = "NORMAL2-IM-1427-0001.pgm", encoded_pgm = "encoded_pgm.txt",freq_table="yarabb";
-=======
     string input_name = "NORMAL2-IM-1442-0001.pgm", output_name = "NORMAL2-IM-1427-0001.pgm", encoded_pgm = "encoded_pgm.txt",freq_table="yarabb", decoded_pgm="test.txt"; 
->>>>>>> abae4a774be491ab5eeaac881a661cd0c5c6cc94
     pgm pic;
     cout << pgmb_read(input_name, pic) << " ERRORS,SUCCESSFUL READ <3" << endl;
     //  cout<< pgmb_write(output_name, pic);
