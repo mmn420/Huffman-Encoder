@@ -83,8 +83,9 @@ public:
         return codes;
     }
 
-    vector<int> Decode(string encodedStream, unordered_map<int, string> Dict) // We save the decoded string in a vector to reverse the compression
+    vector<int> Decode(string encodedStream, unordered_map<int,int> frequencytable) // We save the decoded string in a vector to reverse the compression
     {
+        unordered_map <int,string> Dict = Encode(frequencytable); //building huffman tree
         unordered_map<string, int> InvDict = inverseDict(Dict); // To get the inverted codes map
         vector<int> Image;                                      // We will accumulate the original image sequence in this vector
         string Code;                                            // We will use this string for comparisons

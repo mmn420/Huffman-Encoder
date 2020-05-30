@@ -41,7 +41,7 @@ void deseriallizePgm(string readFile)
     deseriallize.get(max_grey);
     int temp_grey = (int)max_grey;
     bitset<8> grey_bits(temp_grey);
-    int MAX_GREY = (int) grey_bits.to_ulong();
+    int MAX_GREY = (int)grey_bits.to_ulong();
     //deseriallizing padding bits
     char padding;
     deseriallize.get(padding);
@@ -49,19 +49,42 @@ void deseriallizePgm(string readFile)
     bitset<8> padding_bits(temp_padding);
     string st_padding_bits;
     st_padding_bits += padding_bits.to_string();
-    int size = st_padding_bits.size();
-    //deseriallize the data 
+    int padding_size = st_padding_bits.size();
+    //deseriallize the data
     char data;
     string data_final_bits = "";
     while (deseriallize.get(data))
     {
-        int temp_data = (int) data;
+        int temp_data = (int)data;
         bitset<8> data_bits(temp_data);
-        int DATA = (int) data_bits.to_ulong();
+        int DATA = (int)data_bits.to_ulong();
         data_final_bits += to_string(DATA);
     }
-    data_final_bits.erase(data_final_bits.end()-size);
-    cout << HEIGHT << " " << WIDTH << " " << temp_grey << " " << MAX_GREY <<" "<<data_final_bits<<endl;
-        deseriallize.close();
-
+    data_final_bits.erase(data_final_bits.end() - padding_size);
+    cout << HEIGHT << " " << WIDTH << " " << temp_grey << " " << MAX_GREY << " " << data_final_bits << endl;
+    deseriallize.close();
+}
+//deseriallzing the frequency table
+void deseriallize_freq(string readfile)
+{
+    ifstream deseriallize;
+    deseriallize.open(readfile);
+    if (!deseriallize.is_open())
+    {
+        cout << "FILE DID NOT OPEN PROPERLY" << endl;
+        return;
+    }
+    char data;
+    unordered_map<int, int> frequencytabale;
+    for (int i = 0; i < 256; i++)
+    {
+        deseriallize.get(data);
+        int temp_data = (int)data;
+        bitset<8> data_bits(temp_data);
+        int DATA = (int)data_bits.to_ullong();
+        frequencytabale[i] = DATA;
+        cout<<frequencytabale[i]<<" ";
+    }
+    cout<<endl;
+    deseriallize.close();
 }
