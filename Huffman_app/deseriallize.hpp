@@ -36,10 +36,32 @@ void deseriallizePgm(string readFile)
     }
     bitset<32> final_width(width_final_bits);
     int WIDTH = (int)final_width.to_ulong();
-    cout<<HEIGHT<<" "<<WIDTH<<endl;
-    deseriallize.close();
-    /* for (i = 0; i < 4; i++) 
+    //deseriallizing the max grey value
+    char max_grey;
+    deseriallize.get(max_grey);
+    int temp_grey = (int)max_grey;
+    bitset<8> grey_bits(temp_grey);
+    int MAX_GREY = (int) grey_bits.to_ulong();
+    //deseriallizing padding bits
+    char padding;
+    deseriallize.get(padding);
+    int temp_padding = (int)padding;
+    bitset<8> padding_bits(temp_padding);
+    string st_padding_bits;
+    st_padding_bits += padding_bits.to_string();
+    int size = st_padding_bits.size();
+    //deseriallize the data 
+    char data;
+    string data_final_bits = "";
+    while (deseriallize.get(data))
     {
-        deseriallize.get(width[i]);
-    } */
+        int temp_data = (int) data;
+        bitset<8> data_bits(temp_data);
+        int DATA = (int) data_bits.to_ulong();
+        data_final_bits += to_string(DATA);
+    }
+    data_final_bits.erase(data_final_bits.end()-size);
+    cout << HEIGHT << " " << WIDTH << " " << temp_grey << " " << MAX_GREY <<" "<<data_final_bits<<endl;
+        deseriallize.close();
+
 }
