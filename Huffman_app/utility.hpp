@@ -76,9 +76,9 @@ void serializePgm(pgm pic, unordered_map<int, string> codes, string fileName)
         temp_y += h_ysize[i];
         if ((i + 1) % 8 == 0)
         {
-            integer_bits = stoi(temp_x);
+            integer_bits = stoi(temp_x,0,2);
             final_x += char(integer_bits);
-            integer_bits = stoi(temp_y);
+            integer_bits = stoi(temp_y,0,2);
             final_y += char(integer_bits);
             temp_x.clear();
             temp_y.clear();
@@ -91,7 +91,7 @@ void serializePgm(pgm pic, unordered_map<int, string> codes, string fileName)
     //serialize the max gray value in 1 byte.
     bitset<8> maxg_binary(pic.maxg);
     string max_value = maxg_binary.to_string();
-    integer_bits = stoi(max_value);
+    integer_bits = stoi(max_value,0,2);
     output_bits = (char)integer_bits;
     serialize.put(output_bits);
     // SERIALIZING PIXELS' DATA.
@@ -103,7 +103,7 @@ void serializePgm(pgm pic, unordered_map<int, string> codes, string fileName)
             {
                 bitset<8> padding_binary(padding_bits);
                 string padding = padding_binary.to_string();
-                integer_bits = stoi(padding);
+                integer_bits = stoi(padding,0,2);
                 output_bits = (char)integer_bits;
                 serialize.put(output_bits);
             }
@@ -113,7 +113,7 @@ void serializePgm(pgm pic, unordered_map<int, string> codes, string fileName)
         eight_temp += eight_bits[i];
         if ((i + 1) % 8 == 0)
         {
-            integer_bits = stoi(eight_temp);
+            integer_bits = stoi(eight_temp,0,2);
             output_bits = (char)integer_bits;
             serialize.put(output_bits);
             eight_temp.clear();
@@ -123,7 +123,7 @@ void serializePgm(pgm pic, unordered_map<int, string> codes, string fileName)
             while (padding_bits--)
                 eight_temp += "0";
 
-            integer_bits = stoi(eight_temp);
+            integer_bits = stoi(eight_temp,0,2);
             output_bits = (char)integer_bits;
             serialize.put(output_bits);
         }

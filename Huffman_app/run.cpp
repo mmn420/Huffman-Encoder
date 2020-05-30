@@ -17,7 +17,7 @@ int main()
     Huffman compressor;
     auto codes = compressor.Encode(frequencyTable);
     serializePgm(pic,codes,encoded_pgm);
-    Deseriallize_pgm(decoded_pgm);
+    Deseriallize_pgm(encoded_pgm);
   /*for (auto &x : codes)
         cout << x.first << ": " << x.second << '\n';*/
 
