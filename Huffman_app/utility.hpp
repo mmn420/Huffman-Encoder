@@ -163,6 +163,92 @@ void serializeFreq(unordered_map<int, int> frequencyTable, string fileName)
     output.close();
 }
 //*****************************************************************************
+void deserializePgm(string readFile, pgm &pic, string &encodedData)
+{
+    ifstream deserialize;
+    deserialize.open(readFile);
+    if (!deserialize.is_open())
+    {
+        cout << "FILE DID NOT OPEN PROPERLY" << endl;
+        return;
+    }
+    //deseriallzing width and height in four bytes each
+    string height = "";
+    string height_final_bits = "";
+    string width = "";
+    string width_final_bits = "";
+
+    for (int i = 0; i < 4; i++)
+    {
+        deserialize.get(height[i]);
+        int temp_h = (int)height[i];
+        bitset<8> height_bits(temp_h);
+        height_final_bits += height_bits.to_string();
+    }
+    bitset<32> final_height(height_final_bits);
+    pic.xsize = (int)final_height.to_ulong();
+
+    for (int i = 0; i < 4; i++)
+    {
+        deserialize.get(width[i]);
+        int temp_w = (int)width[i];
+        bitset<8> width_bits(temp_w);
+        width_final_bits += width_bits.to_string();
+    }
+    bitset<32> final_width(width_final_bits);
+    pic.ysize = (int)final_width.to_ulong();
+    //deseriallizing the max grey value in one byte
+    char max_grey;
+    deserialize.get(max_grey);
+    unsigned char uc = (unsigned char)max_grey;
+    pic.maxg = (int)uc;
+    //deseriallizing padding bits
+    char char_padding;
+    deserialize.get(char_padding);
+    unsigned char uc_padding = (unsigned char)char_padding;
+    int padding_bits = (int)uc_padding;
+    //deseriallize the data
+    char data;
+    while (deserialize.get(data))
+    {
+        int temp_data = (int)data;
+        bitset<8> data_bits(temp_data);
+        encodedData += data_bits.to_string();
+    }
+    encodedData.erase(encodedData.end() - padding_bits);
+     cout << pic.xsize << " " << pic.ysize << " " << pic.maxg <<  endl;
+    deserialize.close();
+}
+//*****************************************************************************
+//deseriallzing the frequency table
+void deserializeFreq(string readfile, unordered_map<int, int> &frequencyTable)
+{
+    ifstream deserialize;
+    deserialize.open(readfile);
+    if (!deserialize.is_open())
+    {
+        cout << "FILE DID NOT OPEN PROPERLY" << endl;
+        return;
+    }
+
+    char char_freq;
+    int int_freq, freq;
+    string str_freq = "";
+    for (int i = 0; i < 256; i++)
+    {
+        for (int j = 0; j < 4; j++)
+        {
+            deserialize.get(char_freq);
+            int_freq = (int)char_freq;
+            bitset<8> bit_freq(int_freq);
+            str_freq+=bit_freq.to_string();
+        }
+        frequencyTable[i]=stoi(str_freq,0,2);
+        str_freq.clear();
+    }
+    deserialize.close();
+}
+//*****************************************************************************
 bool s_eqi(string s1, string s2)
 //
 //  Purpose:

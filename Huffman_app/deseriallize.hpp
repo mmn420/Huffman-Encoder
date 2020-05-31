@@ -61,7 +61,7 @@ void deseriallizePgm(string readFile)
         data_final_bits += to_string(DATA);
     }
     data_final_bits.erase(data_final_bits.end() - padding_size);
-    cout << HEIGHT << " " << WIDTH << " " << temp_grey << " " << MAX_GREY << " " << data_final_bits << endl;
+    // cout << HEIGHT << " " << WIDTH << " " << temp_grey << " " << MAX_GREY << " " << data_final_bits << endl;
     deseriallize.close();
 }
 //deseriallzing the frequency table
@@ -83,8 +83,8 @@ void deseriallize_freq(string readfile)
         bitset<8> data_bits(temp_data);
         int DATA = (int)data_bits.to_ullong();
         frequencytabale[i] = DATA;
-        cout<<frequencytabale[i]<<" ";
+        //  cout<<frequencytabale[i]<<" ";
     }
-    cout<<endl;
+    cout << endl;
     deseriallize.close();
 }
