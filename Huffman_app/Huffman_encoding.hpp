@@ -59,10 +59,13 @@ public:
     {
         priority_queue<Node *, vector<Node *>, PriorityQueueComparator> Nodes;
 
-        for (auto &x : frequencyTable)
+        for (auto x : frequencyTable)
         {
+            if(x.second!=0)
+            {
             auto temp = new Node(x.first, x.second, nullptr, nullptr);
             Nodes.push(temp);
+            }
         }
 
         while (Nodes.size() > 1) //while the queue contains more than one node
@@ -71,24 +74,23 @@ public:
             Nodes.pop();             //to remove this element from the queue
             auto min2 = Nodes.top(); //to store the second small frequency
             Nodes.pop();
-            auto NewNode = new Node(0, min1->frequency + min2->frequency, min1, min2); //make new node and let the two elements with the smallest frequencies be the children of this node and its frequency is the sum of the frequencies of the children
-            Nodes.push(NewNode);                                                       //insert the new node in the queue
+            auto NewNode = new Node(256, min1->frequency + min2->frequency, min1, min2); //make new node and let the two elements with the smallest frequencies be the children of this node and its frequency is the sum of the frequencies of the children
+            Nodes.push(NewNode);                                                         //insert the new node in the queue
         }
 
         auto headNode = Nodes.top(); //the last node that remains in the queue will be the head of the tree
         Nodes.pop();
-
         TraverseTree(headNode, "");
 
         return codes;
     }
 
-    vector<int> Decode(string encodedStream, unordered_map<int,int> frequencytable) // We save the decoded string in a vector to reverse the compression
+    vector<int> Decode(string encodedStream, unordered_map<int, int> frequencytable) // We save the decoded string in a vector to reverse the compression
     {
-        unordered_map <int,string> Dict = Encode(frequencytable); //building huffman tree
-        unordered_map<string, int> InvDict = inverseDict(Dict); // To get the inverted codes map
-        vector<int> Image;                                      // We will accumulate the original image sequence in this vector
-        string Code;                                            // We will use this string for comparisons
+        unordered_map<int, string> Dict = Encode(frequencytable); //building huffman tree
+        unordered_map<string, int> InvDict = inverseDict(Dict);   // To get the inverted codes map
+        vector<int> Image;                                        // We will accumulate the original image sequence in this vector
+        string Code;                                              // We will use this string for comparisons
         int i = 0;
         while (i < encodedStream.size()) //To operate on all of the encoded string
         {

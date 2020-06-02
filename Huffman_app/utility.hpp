@@ -60,7 +60,7 @@ void serializePgm(pgm pic, unordered_map<int, string> codes, string fileName)
     if (!serialize.is_open())
     {
         cout << "FILE DID NOT OPEN PROPERLY" << endl;
-        return;
+        //return;
     }
 
     // serialize the height and width in 4 bytes
@@ -97,14 +97,11 @@ void serializePgm(pgm pic, unordered_map<int, string> codes, string fileName)
     // SERIALIZING PIXELS' DATA.
     for (int i = 0; i < pic.data.size(); ++i)
         eight_bits.append(codes[pic.data[i]]); //TODO OPTIMIZE, space complexity: HIGH
-                                               //determinning the padding bits and writing it in the beginning of the data.
-    padding_bits = (eight_bits.size()) % 8;
-    if (padding_bits != 0) //saving the number of the padding bits in the beginning of the data
+    //determinning the padding bits and writing it in the beginning of the data.
+    padding_bits = 8 - ((eight_bits.size()) % 8);
+    if (padding_bits < 8 && padding_bits > 0) //saving the number of the padding bits in the beginning of the data
     {
-        bitset<8> padding_binary(padding_bits);
-        string padding = padding_binary.to_string();
-        integer_bits = stoi(padding, 0, 2);
-        output_bits = (char)integer_bits;
+        output_bits = (char)padding_bits;
         serialize.put(output_bits);
     }
 
@@ -118,7 +115,7 @@ void serializePgm(pgm pic, unordered_map<int, string> codes, string fileName)
             serialize.put(output_bits);
             eight_temp.clear();
         }
-        if (padding_bits != 0 && i == eight_bits.size() - 1)
+        if (padding_bits < 8 && padding_bits > 0 && i == eight_bits.size() - 1)
         {
             while (padding_bits--)
                 eight_temp += "0";
@@ -215,8 +212,9 @@ void deserializePgm(string readFile, pgm &pic, string &encodedData)
         bitset<8> data_bits(temp_data);
         encodedData += data_bits.to_string();
     }
-    encodedData.erase(encodedData.end() - padding_bits);
-     cout << pic.xsize << " " << pic.ysize << " " << pic.maxg <<  endl;
+    while (padding_bits--)
+        encodedData.pop_back();
+    //cout << pic.xsize << " " << pic.ysize << " " << pic.maxg << endl;
     deserialize.close();
 }
 //*****************************************************************************
@@ -241,7 +239,7 @@ void deserializeFreq(string readfile, unordered_map<int, int> &frequencyTable)
             deserialize.get(char_freq);
             int_freq = (int)char_freq;
             bitset<8> bit_freq(int_freq);
-            str_freq+=bit_freq.to_string();
+            str_freq += bit_freq.to_string();
         }
         long long x = 0;
         for (int k = 0; k < 32; k++)
@@ -252,6 +250,7 @@ void deserializeFreq(string readfile, unordered_map<int, int> &frequencyTable)
         if (x != 0)
             frequencyTable[i] = x;
         str_freq.clear();
+
     }
     deserialize.close();
 }
