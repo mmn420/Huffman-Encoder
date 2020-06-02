@@ -55,7 +55,7 @@ void serializePgm(pgm pic, unordered_map<int, string> codes, string fileName)
     char output_bits;
     ofstream serialize;
 
-    serialize.open(fileName);
+    serialize.open(fileName, std::ios::binary);
 
     if (!serialize.is_open())
     {
@@ -134,7 +134,7 @@ void serializePgm(pgm pic, unordered_map<int, string> codes, string fileName)
 void serializeFreq(unordered_map<int, int> frequencyTable, string fileName)
 {
     ofstream output;
-    output.open(fileName);
+    output.open(fileName, std::ios::binary);
     if (!output.is_open())
     {
         cout << "FILE DID NOT OPEN PROPERLY" << endl;
@@ -166,7 +166,7 @@ void serializeFreq(unordered_map<int, int> frequencyTable, string fileName)
 void deserializePgm(string readFile, pgm &pic, string &encodedData)
 {
     ifstream deserialize;
-    deserialize.open(readFile);
+    deserialize.open(readFile, std::ios::binary);
     if (!deserialize.is_open())
     {
         cout << "FILE DID NOT OPEN PROPERLY" << endl;
@@ -224,7 +224,7 @@ void deserializePgm(string readFile, pgm &pic, string &encodedData)
 void deserializeFreq(string readfile, unordered_map<int, int> &frequencyTable)
 {
     ifstream deserialize;
-    deserialize.open(readfile);
+    deserialize.open(readfile, std::ios::binary);
     if (!deserialize.is_open())
     {
         cout << "FILE DID NOT OPEN PROPERLY" << endl;
@@ -243,7 +243,14 @@ void deserializeFreq(string readfile, unordered_map<int, int> &frequencyTable)
             bitset<8> bit_freq(int_freq);
             str_freq+=bit_freq.to_string();
         }
-        frequencyTable[i]=stoi(str_freq,0,2);
+        long long x = 0;
+        for (int k = 0; k < 32; k++)
+        {
+            x <<= 1;
+            x += (str_freq[k] == '0') ? 0 : 1;
+        }
+        if (x != 0)
+            frequencyTable[i] = x;
         str_freq.clear();
     }
     deserialize.close();
