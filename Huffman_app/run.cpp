@@ -5,11 +5,9 @@
 using namespace std;
 int main()
 {
-    string input_name = "NORMAL2-IM-1442-0001.pgm", output_name = "new_pic.pgm", encoded_pgm = "encoded_pgm.txt", freq = "freq.txt", decoded_pgm = "decoded_pgm.txt";
+    string input_name = "1.pgm", output_name = "new_pic.pgm", encoded_pgm = "encoded_pgm.txt", freq = "freq.txt", decoded_pgm = "decoded_pgm.txt";
     pgm read_pic;
     cout << pgmb_read(input_name, read_pic) << " ERRORS,SUCCESSFUL READ <3" << endl;
-    //  cout<< pgmb_write(output_name, pic);
-
     unordered_map<int, int> frequencyTable;
     buildFreqTable(read_pic.data, frequencyTable);
     Huffman compressor;
@@ -17,20 +15,25 @@ int main()
     serializePgm(read_pic, codes, encoded_pgm);
     serializeFreq(frequencyTable, freq);
 
-//*******************************************************
+    //*******************************************************
     pgm write_pic;
+    Huffman decompressor;
     string encodedData = "";
-    deserializePgm( encoded_pgm, write_pic, encodedData);
+    deserializePgm(encoded_pgm, write_pic, encodedData);
     unordered_map<int, int> dFrequencyTable;
     deserializeFreq(freq, dFrequencyTable);
-   write_pic.data=compressor.Decode(encodedData,dFrequencyTable);
-  cout << pgmb_write(output_name, write_pic) << " ERRORS,SUCCESSFUL WRITE <3" << endl;
+  //  auto dCodes = decompressor.Encode(frequencyTable);
    /* for(int i=0;i<256;++i)
-    {
-        if(frequencyTable[i]!=dFrequencyTable[i])   cout<<"meshtmamm"<<" ";
-  */  
-    /*for (auto &x : codes)
-        cout << x.first << ": " << x.second << '\n';*/
-
+    if(dCodes[i]!=codes[i]) cout<<dCodes[i]<<" "<<codes[i]<<endl;*/
+   write_pic.data = decompressor.Decode(encodedData, dFrequencyTable);
+     // cout<<write_pic.data.size()<<endl;
+   cout << pgmb_write(output_name, write_pic) << " ERRORS,SUCCESSFUL WRITE <3" << endl;
+   /* for(int i=0;i<256;++i)
+    cout<<frequencyTable[i]<<":"<<dFrequencyTable[i]<<endl;
+    cout<<frequencyTable.size()<<endl<<dFrequencyTable.size()<<endl;*/
+    /* for (auto &x : codes)
+        cout << x.first << ":" << x.second << " ";*/
+    /*for (auto &x : frequencyTable)
+        cout << x.first << ":" << x.second << " ";*/
     return 0;
 }

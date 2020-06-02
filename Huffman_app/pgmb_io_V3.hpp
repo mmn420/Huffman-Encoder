@@ -467,8 +467,7 @@ bool pgmb_write_data(ofstream &output, pgm pic)
     unsigned char c;
     int i;
     for (i = 0; i < pic.data.size(); i++)
-        output << (unsigned char)pic.data[i]; // TODO: why bitset<8> doesn't work like char.
-    output << endl;
+        output.put((char)pic.data[i]); // TODO: why bitset<8> doesn't work like char.
 
     return false;
 }
@@ -496,9 +495,9 @@ bool pgmb_write_header(ofstream &output, pgm pic)
 //
 {
     output << "P5"
-           << " "
+           << endl
            << pic.xsize << " "
-           << pic.ysize << " "
+           << pic.ysize  << endl
            << pic.maxg << endl;
 
     return false;
