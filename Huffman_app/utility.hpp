@@ -254,6 +254,13 @@ void deserializeFreq(string readfile, unordered_map<int, int> &frequencyTable)
     }
     deserialize.close();
 }
+int file_size(string file_name)
+{
+    ifstream fileSize(file_name, ios::binary);
+    fileSize.seekg(0, ios::end);
+    int size = fileSize.tellg();
+    return size;
+}
 //*****************************************************************************
 bool s_eqi(string s1, string s2)
 //

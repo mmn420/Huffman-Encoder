@@ -46,15 +46,12 @@ int main(int argc, char *argv[])
         serializePgm(read_pic, codes, imageNameNoExtension + ".enc");
         serializeFreq(frequencyTable, imageNameNoExtension + ".frq");
         //To calculate the files sizes
-        ifstream compressedImage_size(imageNameNoExtension + ".enc", ios::binary);
-        compressedImage_size.seekg(0, ios::end);
-        int CompressedImageSize = compressedImage_size.tellg();
-        ifstream OriginalImage_size(imageNameNoExtension + ".pgm", ios::binary);
-        OriginalImage_size.seekg(0, ios::end);
-        int OriginalImageSize = OriginalImage_size.tellg();
-        float Compression_Ratio = ((float)OriginalImageSize/(float)CompressedImageSize);
-        cout<<"Size Before= "<< OriginalImageSize<<endl<<"Size After ="<<CompressedImageSize<<endl<<"The Compression Ratio is " <<Compression_Ratio<<endl;
-
+        int OriginalImage_size = file_size(imageNameNoExtension + ".pgm");
+        int CompressedImage_size = file_size(imageNameNoExtension + ".enc");
+        float Compression_Ratio = ((float)OriginalImage_size) / ((float)CompressedImage_size);
+        cout << "Size Before= " << OriginalImage_size << endl
+             << "Size After =" << CompressedImage_size << endl
+             << "The Compression Ratio is " << Compression_Ratio << endl;
     }
     //*******************************************************
     else if (argc == 4)
