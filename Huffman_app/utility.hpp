@@ -254,6 +254,7 @@ void deserializeFreq(string readfile, unordered_map<int, int> &frequencyTable)
     }
     deserialize.close();
 }
+//*****************************************************************************
 int file_size(string file_name)
 {
     ifstream fileSize(file_name, ios::binary);

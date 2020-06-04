@@ -502,22 +502,4 @@ bool pgmb_write_header(ofstream &output, pgm pic)
 
     return false;
 }
-int SizeCopmressed ()
-
-{
-  std::  ifstream in_file("encode_pgm.txt",ios::binary);
-  in_file.seekg(0,ios::end);
-  int file_size = in_file.tellg();
-  return file_size;
-
-}
-int SizeDecopmressed ()
-
-{
-  std::  ifstream in_file("decode_pgm.txt",ios::binary);
-  in_file.seekg(0,ios::end);
-  int file_size = in_file.tellg();
-  return file_size;
-
-}
 #endif
