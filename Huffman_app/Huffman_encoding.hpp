@@ -10,7 +10,14 @@ public:
     int symbol;
     Node *left;
     Node *right;
-    Node(int symbol, int frequency, Node *left, Node *right) //constructor
+    Node(int symbol // symbol of the node
+    ,
+        int frequency // frequency of the symbol
+        ,
+         Node *left //left child
+         ,
+          Node *right //right child
+          )
     {
         this->frequency = frequency;
         this->symbol = symbol;
@@ -21,20 +28,20 @@ public:
 class Huffman
 {
 private:
-    unordered_map<int, string> codes;
+    unordered_map<int, string> codes; //to store the codes of all elements
     void TraverseTree(Node *head, string code) //recursive function to traverse the tree to get the codes
     {
         if (head == nullptr) //if the tree is empty
             return;
 
         if (head->left != nullptr) //if the node has left child
-            TraverseTree(head->left, code + "0");
+            TraverseTree(head->left, code + "0"); //call the recursive function and increase 0 to its code
 
         if (head->right != nullptr) //if the node has right child
-            TraverseTree(head->right, code + "1");
+            TraverseTree(head->right, code + "1"); //call the recursive function and increase 1 to the code
 
-        if (head->left == nullptr && head->right == nullptr)
-            codes[head->symbol] = code;
+        if (head->left == nullptr && head->right == nullptr) //if the node is a leaf
+            codes[head->symbol] = code; //push the code of the node in codes
     }
     unordered_map<string, int> inverseDict(unordered_map<int, string> dict) // to invert the huffman code hashmap
     {
@@ -57,14 +64,15 @@ private:
 public:
     unordered_map<int, string> Encode(unordered_map<int, int> frequencyTable)
     {
+        //1-push all elements in the priority queue
         priority_queue<Node *, vector<Node *>, PriorityQueueComparator> Nodes;
 
-        for (auto &x : frequencyTable)
+        for (auto &x : frequencyTable) // to iterate on all frequencies in the frequency map
         {
             auto temp = new Node(x.first, x.second, nullptr, nullptr);
             Nodes.push(temp);
         }
-
+        //2-pop the smallest two elements in freq., merge them together then push them back to the queue 
         while (Nodes.size() > 1) //while the queue contains more than one node
         {
             auto min1 = Nodes.top(); //to store the first small frequency
@@ -77,7 +85,7 @@ public:
 
         auto headNode = Nodes.top(); //the last node that remains in the queue will be the head of the tree
         Nodes.pop();
-
+        //3-get the codes
         TraverseTree(headNode, "");
 
         return codes;
