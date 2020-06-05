@@ -1,14 +1,13 @@
 #ifndef UTILITY
 #define UTILITY
 #include <bits/stdc++.h>
-using namespace std;
 //*****************************************************************************
 // Functions declarations
-bool s_eqi(string s1, string s2);
-int s_len_trim(string s);
-void s_word_extract_first(string s, string &s1, string &s2);
+bool s_eqi(std::string s1, std::string s2);
+int s_len_trim(std::string s);
+void s_word_extract_first(std::string s, std::string &s1, std::string &s2);
 char ch_cap(char ch);
-void buildFreqTable(vector<int> data, unordered_map<int, int> &frequencyTable);
+void buildFreqTable(std::vector<int> data, std::unordered_map<int, int> &frequencyTable);
 //*****************************************************************************
 struct pgm
 //
@@ -26,10 +25,10 @@ struct pgm
 //
 {
     int xsize, ysize, maxg;
-    vector<int> data;
+    std::vector<int> data;
 };
 //*****************************************************************************
-void buildFreqTable(vector<int> data, unordered_map<int, int> &frequencyTable)
+void buildFreqTable(std::vector<int> data, std::unordered_map<int, int> &frequencyTable)
 //
 //  Purpose:
 //
@@ -46,29 +45,29 @@ void buildFreqTable(vector<int> data, unordered_map<int, int> &frequencyTable)
         frequencyTable[data[i]]++;
 }
 //*****************************************************************************
-void serializePgm(pgm pic, unordered_map<int, string> codes, string fileName)
+void serializePgm(pgm pic, std::unordered_map<int, std::string> codes, std::string fileName)
 {
-    string eight_bits = "";
+    std::string eight_bits = "";
     int padding_bits = 0;
-    string eight_temp = "";
+    std::string eight_temp = "";
     int integer_bits = 0;
     char output_bits;
-    ofstream serialize;
+    std::ofstream serialize;
 
-    serialize.open(fileName);
+    serialize.open(fileName, std::ios::binary);
 
     if (!serialize.is_open())
     {
-        cout << "FILE DID NOT OPEN PROPERLY" << endl;
-        return;
+        std::cout << "FILE DID NOT OPEN PROPERLY" << std::endl;
+        //return;
     }
 
     // serialize the height and width in 4 bytes
-    bitset<32> header_xsize(pic.xsize);
-    bitset<32> header_ysize(pic.ysize);
-    string h_xsize = header_xsize.to_string();
-    string h_ysize = header_ysize.to_string();
-    string temp_x = "", temp_y = "", final_x = "", final_y = "";
+    std::bitset<32> header_xsize(pic.xsize);
+    std::bitset<32> header_ysize(pic.ysize);
+    std::string h_xsize = header_xsize.to_string();
+    std::string h_ysize = header_ysize.to_string();
+    std::string temp_x = "", temp_y = "", final_x = "", final_y = "";
 
     for (int i = 0; i < 32; ++i)
     {
@@ -76,9 +75,9 @@ void serializePgm(pgm pic, unordered_map<int, string> codes, string fileName)
         temp_y += h_ysize[i];
         if ((i + 1) % 8 == 0)
         {
-            integer_bits = stoi(temp_x);
+            integer_bits = stoi(temp_x, 0, 2);
             final_x += char(integer_bits);
-            integer_bits = stoi(temp_y);
+            integer_bits = stoi(temp_y, 0, 2);
             final_y += char(integer_bits);
             temp_x.clear();
             temp_y.clear();
@@ -89,41 +88,38 @@ void serializePgm(pgm pic, unordered_map<int, string> codes, string fileName)
     for (int i = 0; i < 4; ++i)
         serialize.put(final_y[i]);
     //serialize the max gray value in 1 byte.
-    bitset<8> maxg_binary(pic.maxg);
-    string max_value = maxg_binary.to_string();
-    integer_bits = stoi(max_value);
+    std::bitset<8> maxg_binary(pic.maxg);
+    std::string max_value = maxg_binary.to_string();
+    integer_bits = stoi(max_value, 0, 2);
     output_bits = (char)integer_bits;
     serialize.put(output_bits);
     // SERIALIZING PIXELS' DATA.
     for (int i = 0; i < pic.data.size(); ++i)
         eight_bits.append(codes[pic.data[i]]); //TODO OPTIMIZE, space complexity: HIGH
-     //determinning the padding bits and writing it in the beginning of the data.
-            padding_bits = (eight_bits.size())%8;
-            if (padding_bits != 0) //saving the number of the padding bits in the beginning of the data  
-            {
-                bitset<8> padding_binary(padding_bits);
-                string padding = padding_binary.to_string();
-                integer_bits = stoi(padding);
-                output_bits = (char)integer_bits;
-                serialize.put(output_bits);
-            }
-        
+    //determinning the padding bits and writing it in the beginning of the data.
+    padding_bits = 8 - ((eight_bits.size()) % 8);
+    if (padding_bits < 8 && padding_bits > 0) //saving the number of the padding bits in the beginning of the data
+    {
+        output_bits = (char)padding_bits;
+        serialize.put(output_bits);
+    }
+
     for (int i = 0; i < eight_bits.size(); ++i)
     {
         eight_temp += eight_bits[i];
         if ((i + 1) % 8 == 0)
         {
-            integer_bits = stoi(eight_temp);
+            integer_bits = stoi(eight_temp, 0, 2);
             output_bits = (char)integer_bits;
             serialize.put(output_bits);
             eight_temp.clear();
         }
-        if (padding_bits != 0 && i == eight_bits.size() - 1)
+        if (padding_bits < 8 && padding_bits > 0 && i == eight_bits.size() - 1)
         {
             while (padding_bits--)
                 eight_temp += "0";
 
-            integer_bits = stoi(eight_temp);
+            integer_bits = stoi(eight_temp, 0, 2);
             output_bits = (char)integer_bits;
             serialize.put(output_bits);
         }
@@ -131,11 +127,141 @@ void serializePgm(pgm pic, unordered_map<int, string> codes, string fileName)
     serialize.close();
 }
 //*****************************************************************************
-void serializeFreq(unordered_map<int, int> frequencyTable, string fileName)
+void serializeFreq(std::unordered_map<int, int> frequencyTable, std::string fileName)
 {
+    std::ofstream output;
+    output.open(fileName, std::ios::binary);
+    if (!output.is_open())
+    {
+        std::cout << "FILE DID NOT OPEN PROPERLY" << std::endl;
+        return;
+    }
+
+    std::string temp_freq = "", final_freq = "", string_freq = "";
+    int integer_bits = 0;
+    for (int i = 0; i < 256; ++i)
+    {
+        std::bitset<32> freq(frequencyTable[i]);
+        string_freq = freq.to_string();
+
+        for (int i = 0; i < 32; ++i)
+        {
+            temp_freq += string_freq[i];
+
+            if ((i + 1) % 8 == 0)
+            {
+                integer_bits = stoi(temp_freq, 0, 2);
+                output.put(char(integer_bits));
+                temp_freq.clear();
+            }
+        }
+    }
+    output.close();
 }
 //*****************************************************************************
-bool s_eqi(string s1, string s2)
+void deserializePgm(std::string readFile, pgm &pic, std::string &encodedData)
+{
+    std::ifstream deserialize;
+    deserialize.open(readFile, std::ios::binary);
+    if (!deserialize.is_open())
+    {
+        std::cout << "FILE DID NOT OPEN PROPERLY" << std::endl;
+        return;
+    }
+    //deseriallzing width and height in four bytes each
+    std::string height = "";
+    std::string height_final_bits = "";
+    std::string width = "";
+    std::string width_final_bits = "";
+
+    for (int i = 0; i < 4; i++)
+    {
+        deserialize.get(height[i]);
+        int temp_h = (int)height[i];
+        std::bitset<8> height_bits(temp_h);
+        height_final_bits += height_bits.to_string();
+    }
+    std::bitset<32> final_height(height_final_bits);
+    pic.xsize = (int)final_height.to_ulong();
+
+    for (int i = 0; i < 4; i++)
+    {
+        deserialize.get(width[i]);
+        int temp_w = (int)width[i];
+        std::bitset<8> width_bits(temp_w);
+        width_final_bits += width_bits.to_string();
+    }
+    std::bitset<32> final_width(width_final_bits);
+    pic.ysize = (int)final_width.to_ulong();
+    //deseriallizing the max grey value in one byte
+    char max_grey;
+    deserialize.get(max_grey);
+    unsigned char uc = (unsigned char)max_grey;
+    pic.maxg = (int)uc;
+    //deseriallizing padding bits
+    char char_padding;
+    deserialize.get(char_padding);
+    unsigned char uc_padding = (unsigned char)char_padding;
+    int padding_bits = (int)uc_padding;
+    //deseriallize the data
+    char data;
+    while (deserialize.get(data))
+    {
+        int temp_data = (int)data;
+        std::bitset<8> data_bits(temp_data);
+        encodedData += data_bits.to_string();
+    }
+    while (padding_bits--)
+        encodedData.pop_back();
+    //cout << pic.xsize << " " << pic.ysize << " " << pic.maxg << endl;
+    deserialize.close();
+}
+//*****************************************************************************
+//deseriallzing the frequency table
+void deserializeFreq(std::string readfile, std::unordered_map<int, int> &frequencyTable)
+{
+    std::ifstream deserialize;
+    deserialize.open(readfile, std::ios::binary);
+    if (!deserialize.is_open())
+    {
+        std::cout << "FILE DID NOT OPEN PROPERLY" << std::endl;
+        return;
+    }
+
+    char char_freq;
+    int int_freq, freq;
+    std::string str_freq = "";
+    for (int i = 0; i < 256; i++)
+    {
+        for (int j = 0; j < 4; j++)
+        {
+            deserialize.get(char_freq);
+            int_freq = (int)char_freq;
+            std::bitset<8> bit_freq(int_freq);
+            str_freq += bit_freq.to_string();
+        }
+        long long x = 0;
+        for (int k = 0; k < 32; k++)
+        {
+            x <<= 1;
+            x += (str_freq[k] == '0') ? 0 : 1;
+        }
+        if (x != 0)
+            frequencyTable[i] = x;
+        str_freq.clear();
+    }
+    deserialize.close();
+}
+//*****************************************************************************
+int file_size(std::string file_name)
+{
+    std::ifstream fileSize(file_name, std::ios::binary);
+    fileSize.seekg(0, std::ios::end);
+    int size = fileSize.tellg();
+    return size;
+}
+//*****************************************************************************
+bool s_eqi(std::string s1, std::string s2)
 //
 //  Purpose:
 //
@@ -203,7 +329,7 @@ bool s_eqi(string s1, string s2)
     return true;
 }
 //*****************************************************************************
-int s_len_trim(string s)
+int s_len_trim(std::string s)
 //
 //  Purpose:
 //
@@ -233,7 +359,7 @@ int s_len_trim(string s)
     return n;
 }
 //*****************************************************************************
-void s_word_extract_first(string s, string &s1, string &s2)
+void s_word_extract_first(std::string s, std::string &s1,std:: string &s2)
 //
 //  Purpose:
 //
