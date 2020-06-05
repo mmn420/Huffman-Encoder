@@ -1,7 +1,6 @@
 #ifndef HUFFMAN_ENCODING
 #define HUFFMAN_ENCODING
 #include <bits/stdc++.h>
-using namespace std;
 
 class Node
 {
@@ -21,8 +20,8 @@ public:
 class Huffman
 {
 private:
-    unordered_map<int, string> codes;
-    void TraverseTree(Node *head, string code) //recursive function to traverse the tree to get the codes
+    std::unordered_map<int, std::string> codes;
+    void TraverseTree(Node *head, std::string code) //recursive function to traverse the tree to get the codes
     {
         if (head == nullptr) //if the tree is empty
             return;
@@ -36,9 +35,9 @@ private:
         if (head->left == nullptr && head->right == nullptr)
             codes[head->symbol] = code;
     }
-    unordered_map<string, int> inverseDict(unordered_map<int, string> dict) // to invert the huffman code hashmap
+    std::unordered_map<std::string, int> inverseDict(const std::unordered_map<int, std::string> &dict) // to invert the huffman code hashmap
     {
-        unordered_map<string, int> invDic;
+        std::unordered_map<std::string, int> invDic;
         for (auto &x : dict)
         {
             invDic[x.second] = x.first;
@@ -55,18 +54,12 @@ private:
     };
 
 public:
-    unordered_map<int, string> Encode(unordered_map<int, int> frequencyTable)
+    std::unordered_map<int, std::string> Encode(const std::unordered_map<int, int> &frequencyTable)
     {
-        priority_queue<Node *, vector<Node *>, PriorityQueueComparator> Nodes;
+        std::priority_queue<Node *, std::vector<Node *>, PriorityQueueComparator> Nodes;
 
-        for (auto x : frequencyTable)
-        {
-            if(x.second!=0)
-            {
-            auto temp = new Node(x.first, x.second, nullptr, nullptr);
-            Nodes.push(temp);
-            }
-        }
+        for (auto &[frequency, symbol] : frequencyTable)
+            Nodes.emplace(new Node(frequency, symbol, nullptr, nullptr));
 
         while (Nodes.size() > 1) //while the queue contains more than one node
         {
@@ -74,8 +67,8 @@ public:
             Nodes.pop();             //to remove this element from the queue
             auto min2 = Nodes.top(); //to store the second small frequency
             Nodes.pop();
-            auto NewNode = new Node(256, min1->frequency + min2->frequency, min1, min2); //make new node and let the two elements with the smallest frequencies be the children of this node and its frequency is the sum of the frequencies of the children
-            Nodes.push(NewNode);                                                         //insert the new node in the queue
+            //make new node and let the two elements with the smallest frequencies be the children of this node and its frequency is the sum of the frequencies of the children
+            Nodes.emplace(new Node(256, min1->frequency + min2->frequency, min1, min2)); //insert the new node in the queue
         }
 
         auto headNode = Nodes.top(); //the last node that remains in the queue will be the head of the tree
@@ -85,12 +78,12 @@ public:
         return codes;
     }
 
-    vector<int> Decode(string encodedStream, unordered_map<int, int> frequencytable) // We save the decoded string in a vector to reverse the compression
+    std::vector<int> Decode(std::string encodedStream, const std::unordered_map<int, int> &frequencytable) // We save the decoded string in a vector to reverse the compression
     {
-        unordered_map<int, string> Dict = Encode(frequencytable); //building huffman tree
-        unordered_map<string, int> InvDict = inverseDict(Dict);   // To get the inverted codes map
-        vector<int> Image;                                        // We will accumulate the original image sequence in this vector
-        string Code;                                              // We will use this string for comparisons
+        std::unordered_map<int, std::string> Dict = Encode(frequencytable); //building huffman tree
+        std::unordered_map<std::string, int> InvDict = inverseDict(Dict);   // To get the inverted codes map
+        std::vector<int> Image;                                             // We will accumulate the original image sequence in this vector
+        std::string Code;                                                   // We will use this string for comparisons
         int i = 0;
         while (i < encodedStream.size()) //To operate on all of the encoded string
         {
