@@ -3,10 +3,25 @@
 #include "pgmb_io_V3.hpp"
 #include "Huffman_encoding.hpp"
 using namespace std;
+//***********************************************************************
+struct fileName
+{
+    string imageNameNoExtension;
+    string encoded_pgm;
+    string freq;
+    string output_name;
+};
+//***********************************************************************
 
+//                      Functions Declarations
+
+//***********************************************************************
+void Compress(pgm &read_pic, string imageNameNoExtension);
+void Decompress(pgm &write_pic, fileName &file_name);
+//***********************************************************************
 int main(int argc, char *argv[])
 {
-
+    fileName file_name;
     if (argc == 2)
     {
         string imageName = argv[1];
@@ -23,7 +38,7 @@ int main(int argc, char *argv[])
             return -1;
         }
 
-        string imageNameNoExtension = imageName.substr(0, imageName.length() - 4);
+        file_name.imageNameNoExtension = imageName.substr(0, imageName.length() - 4);
 
         pgm read_pic;
         int errorCount = pgmb_read(imageName, read_pic);
@@ -32,28 +47,10 @@ int main(int argc, char *argv[])
             cout << errorCount << " errors encountered\n";
             return -1;
         }
-
-        unordered_map<int, int> frequencyTable;
-        buildFreqTable(read_pic.data, frequencyTable);
-        unordered_map<int, int> tempTable;
-        for (int i = 0; i < 256; i++)
-            if (frequencyTable.count(i))
-                tempTable[i] = frequencyTable[i];
-
-        frequencyTable = tempTable;
-        Huffman compressor;
-        auto codes = compressor.Encode(frequencyTable);
-        serializePgm(read_pic, codes, imageNameNoExtension + ".enc");
-        serializeFreq(frequencyTable, imageNameNoExtension + ".frq");
-        //To calculate the files sizes
-        int OriginalImage_size = file_size(imageNameNoExtension + ".pgm");
-        int CompressedImage_size = file_size(imageNameNoExtension + ".enc");
-        float Compression_Ratio = ((float)OriginalImage_size) / ((float)CompressedImage_size);
-        cout << "Size Before= " << OriginalImage_size << endl
-             << "Size After =" << CompressedImage_size << endl
-             << "The Compression Ratio is " << Compression_Ratio << endl;
+        Compress(read_pic, file_name.imageNameNoExtension);
     }
-    //*******************************************************
+
+    
     else if (argc == 4)
     {
         int flagPos = -1;
@@ -68,40 +65,27 @@ int main(int argc, char *argv[])
             return -1;
         }
 
-        string encoded_pgm;
-        string freq;
-        string output_name;
+        file_name.freq = argv[flagPos + 1];
 
-        freq = argv[flagPos + 1];
+        file_name.encoded_pgm = (flagPos == 1) ? argv[3] : argv[1];
 
-        encoded_pgm = (flagPos == 1) ? argv[3] : argv[1];
-
-        if (encoded_pgm.length() < 4 || freq.length() < 4)
+        if (file_name.encoded_pgm.length() < 4 || file_name.freq.length() < 4)
         {
             cout << "Bad file name\n";
             return -1;
         }
 
-        if (encoded_pgm.substr(encoded_pgm.length() - 4, 4) != ".enc" || freq.substr(freq.length() - 4, 4) != ".frq")
+        if (file_name.encoded_pgm.substr(file_name.encoded_pgm.length() - 4, 4) != ".enc" || file_name.freq.substr(file_name.freq.length() - 4, 4) != ".frq")
         {
             cout << "Invalid file extension\n";
             return -1;
         }
 
-        output_name = encoded_pgm.substr(0, encoded_pgm.length() - 4) + ".pgm";
-
+        file_name.output_name = file_name.encoded_pgm.substr(0, file_name.encoded_pgm.length() - 4) + ".pgm";
+        
         pgm write_pic;
-        Huffman decompressor;
-        string encodedData = "";
-        deserializePgm(encoded_pgm, write_pic, encodedData);
-        unordered_map<int, int> dFrequencyTable;
-        deserializeFreq(freq, dFrequencyTable);
-        //  auto dCodes = decompressor.Encode(frequencyTable);
-        /* for(int i=0;i<256;++i)
-        if(dCodes[i]!=codes[i]) cout<<dCodes[i]<<" "<<codes[i]<<endl;*/
-        write_pic.data = decompressor.Decode(encodedData, dFrequencyTable);
-        // cout<<write_pic.data.size()<<endl;
-        int errorCount = pgmb_write(output_name, write_pic);
+        Decompress(write_pic,file_name);
+        int errorCount = pgmb_write(file_name.output_name, write_pic);
         if (errorCount)
         {
             cout << errorCount << " errors encountered\n";
@@ -113,11 +97,36 @@ int main(int argc, char *argv[])
         cout << "Invalid arguments specified\n";
     }
     return 0;
-    /* for(int i=0;i<256;++i)
-    cout<<frequencyTable[i]<<":"<<dFrequencyTable[i]<<endl;
-    cout<<frequencyTable.size()<<endl<<dFrequencyTable.size()<<endl;*/
-    /* for (auto &x : codes)
-        cout << x.first << ":" << x.second << " ";*/
-    /*for (auto &x : frequencyTable)
-        cout << x.first << ":" << x.second << " ";*/
 }
+//***********************************************************************
+
+//                      Functions Definitions
+
+//***********************************************************************
+void Compress(pgm &read_pic, string imageNameNoExtension)
+{
+    unordered_map<int, int> frequencyTable;
+    buildFreqTable(read_pic.data, frequencyTable);
+    unordered_map<int, int> tempTable;
+    for (int i = 0; i < 256; i++)
+        if (frequencyTable.count(i))
+            tempTable[i] = frequencyTable[i];
+
+    frequencyTable = tempTable;
+    Huffman compressor;
+    auto codes = compressor.Encode(frequencyTable);
+    serializePgm(read_pic, codes, imageNameNoExtension + ".enc");
+    serializeFreq(frequencyTable, imageNameNoExtension + ".frq");
+}
+//***********************************************************************
+void Decompress(pgm &write_pic, fileName &file_name)
+{
+
+    Huffman decompressor;
+    string encodedData = "";
+    deserializePgm(file_name.encoded_pgm, write_pic, encodedData);
+    unordered_map<int, int> dFrequencyTable;
+    deserializeFreq(file_name.freq, dFrequencyTable);
+    write_pic.data = decompressor.Decode(encodedData, dFrequencyTable);
+}
+//***********************************************************************

@@ -59,7 +59,6 @@ void serializePgm(pgm pic, std::unordered_map<int, std::string> codes, std::stri
     if (!serialize.is_open())
     {
         std::cout << "FILE DID NOT OPEN PROPERLY" << std::endl;
-        //return;
     }
 
     // serialize the height and width in 4 bytes
@@ -213,7 +212,6 @@ void deserializePgm(std::string readFile, pgm &pic, std::string &encodedData)
     }
     while (padding_bits--)
         encodedData.pop_back();
-    //cout << pic.xsize << " " << pic.ysize << " " << pic.maxg << endl;
     deserialize.close();
 }
 //*****************************************************************************
