@@ -1,12 +1,12 @@
 # Fdb version 3
-["bibtex report"] 1591478004 "report.aux" "report.bbl" "report" 1591478006
+["bibtex report"] 1591479109 "report.aux" "report.bbl" "report" 1591479111
   "./IEEEtran.bst" 1590787602 61632 bc5380b3434a66b895bbc75d3d380540 ""
   "bibliography.bib" 1591399218 1005 c1457e50e3577a00d48e456a7c96ee7b ""
-  "report.aux" 1591478006 4681 dcf2934289ec36609058a8af146de9cf "pdflatex"
+  "report.aux" 1591479111 4681 dcf2934289ec36609058a8af146de9cf "pdflatex"
   (generated)
   "report.bbl"
   "report.blg"
-["pdflatex"] 1591478005 "c:/Users/momen/Desktop/sbe201-2020-final-project-huffman-sbe201-2020-team14/report/report.tex" "c:/Users/momen/Desktop/sbe201-2020-final-project-huffman-sbe201-2020-team14/report/report.pdf" "report" 1591478006
+["pdflatex"] 1591479109 "c:/Users/momen/Desktop/sbe201-2020-final-project-huffman-sbe201-2020-team14/report/report.tex" "c:/Users/momen/Desktop/sbe201-2020-final-project-huffman-sbe201-2020-team14/report/report.pdf" "report" 1591479111
   "After_Decompression_run.png" 1591477695 30610 a980f1de33068e417a43958be95cd80a ""
   "Arguments.png" 1591476643 20226 4212a858afde8024ee051580f627c679 ""
   "Block_Diagram.png" 1591405928 93305 0b097c7da18a7e0436a0ea1811ed504c ""
@@ -116,16 +116,16 @@
   "Huffman-tree-Fig5.24.png" 1591406117 28279 db68be12e9632b1793a4bca86bd605f1 ""
   "Result_decompression.png" 1591477757 35785 e8b1f1f0acc28df548fedaf845e160b9 ""
   "Run.png" 1591476932 24541 d8796201be881af0afb2f8c03fecd802 ""
-  "c:/Users/momen/Desktop/sbe201-2020-final-project-huffman-sbe201-2020-team14/report/report.aux" 1591478006 4681 dcf2934289ec36609058a8af146de9cf ""
-  "c:/Users/momen/Desktop/sbe201-2020-final-project-huffman-sbe201-2020-team14/report/report.tex" 1591478001 8256 caaf976d7ebcd11919b0cb70968f8875 ""
+  "c:/Users/momen/Desktop/sbe201-2020-final-project-huffman-sbe201-2020-team14/report/report.aux" 1591479111 4681 dcf2934289ec36609058a8af146de9cf ""
+  "c:/Users/momen/Desktop/sbe201-2020-final-project-huffman-sbe201-2020-team14/report/report.tex" 1591479106 8487 c06f8c5115f201087bafb3be877576dd ""
   "kisspng-windows-8-logo-windows-update-5afc2e323bc141.1790811615264763382448.png" 1591473734 2557 19cf30ab8b62cf17e3dafa81aeeede36 ""
-  "report.aux" 1591478006 4681 dcf2934289ec36609058a8af146de9cf "pdflatex"
-  "report.bbl" 1591478004 1299 a160cfe8ac7af8da0f3ee61081e5e7ec "bibtex report"
-  "report.tex" 1591478001 8256 caaf976d7ebcd11919b0cb70968f8875 ""
+  "report.aux" 1591479111 4681 dcf2934289ec36609058a8af146de9cf "pdflatex"
+  "report.bbl" 1591479109 1299 a160cfe8ac7af8da0f3ee61081e5e7ec "bibtex report"
+  "report.tex" 1591479106 8487 c06f8c5115f201087bafb3be877576dd ""
   "statcourse.sty" 1590787602 8722 3e1d067c0119ce1c66a0afe1ad28be8e ""
   (generated)
-  "c:/Users/momen/Desktop/sbe201-2020-final-project-huffman-sbe201-2020-team14/report/report.pdf"
-  "report.log"
-  "c:/Users/momen/Desktop/sbe201-2020-final-project-huffman-sbe201-2020-team14/report/report.log"
   "report.pdf"
+  "c:/Users/momen/Desktop/sbe201-2020-final-project-huffman-sbe201-2020-team14/report/report.pdf"
+  "c:/Users/momen/Desktop/sbe201-2020-final-project-huffman-sbe201-2020-team14/report/report.log"
+  "report.log"
   "report.aux"
