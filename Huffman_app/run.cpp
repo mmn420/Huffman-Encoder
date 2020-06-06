@@ -128,6 +128,7 @@ void Compress(pgm &read_pic, string imageNameNoExtension)
     auto codes = compressor.Encode(frequencyTable);
     serializePgm(read_pic, codes, imageNameNoExtension + ".enc");
     serializeFreq(frequencyTable, imageNameNoExtension + ".frq");
+    std::cout<<"Image compressed successfully"<<std::endl;
 }
 //***********************************************************************
 void Decompress(pgm &write_pic, fileName &file_name)
@@ -138,5 +139,6 @@ void Decompress(pgm &write_pic, fileName &file_name)
     unordered_map<int, int> dFrequencyTable;
     deserializeFreq(file_name.freq, dFrequencyTable);
     write_pic.data = decompressor.Decode(encodedData, dFrequencyTable);
+    std::cout<<"Successfull Decompression"<<std::endl;
 }
 //***********************************************************************
