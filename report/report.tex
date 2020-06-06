@@ -6,6 +6,8 @@
 \usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage{float}
+
 
 % Include other packages here, before hyperref.
 
@@ -13,6 +15,12 @@
 % egpaper.aux before re-running latex.  (Or just hit 'q' on the first latex
 % run, let it finish, and you should be clear).
 \usepackage[breaklinks=true,bookmarks=false]{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+}
 
 
 \statcoursefinalcopy
@@ -33,17 +41,23 @@
 %%%%%%%%% TITLE
 \title{\LaTeX\ Template for SBE201 Project Report}
 
-\author{First Author\\
-{\tt\small firstauthor@eng-st.cu.edu.eg}
+\title{Huffman Encoding}
+
+\author{Mostafa Mohamed Essam\\
+{\tt\small mostafa.mohamed00@eng-st.cu.edu.eg}
 \and
-Second Author\\
-{\tt\small secondauthor@eng-st.cu.edu.eg}
+Habiba Mahmoud Abdelhalim\\
+{\tt\small habiba.ahmed98@eng-st.cu.edu.eg}
 \and
-Third Author\\
-{\tt\small thirdauthor@eng-st.cu.edu.eg}
+Mo'men Maged Mohamed\\
+{\tt\small momen.rizk99@eng-st.cu.edu.eg}
 \and
-Fourth Author\\
-{\tt\small thirdauthor@eng-st.cu.edu.eg}
+Mariam Mohamed Osama\\
+{\tt\small mariam.hamed99@eng-st.cu.edu.eg}
+\and
+Anas Mohamed Abdelrahman\\
+{\tt\small fakestar.anas19019@gmail.com}
+
 }
 
 \maketitle
@@ -63,46 +77,54 @@ Fourth Author\\
 
 \section{Introduction}
 
+In 1951, the MIT student David A. Huffman was working on his term paper which his professor gave to Huffman's class for whom didn't want to take the final exam.
+The Problem that was assigned to them was to find the most effecient binary code. Huffman got the idea to use a frequency sorted binary tree and proved that his method is the most efficient.\cite{1991SciAm.265c..54S}
+\\
+Huffman coding assigns binary codes to character in such a way that the code's lenght depends on the frequency/weight of its corresponding character.
+The codes have variable lenghths, and they're prefix-free which means that any code isn't a prefix of any of the other codes.\cite{huffman_encoding_2014} 
+\\
+The Huffman tree is a binary tree in which any leaf in the tree corresponds to the character/data that is being coded.
+\\
+We have managed to utilize this technique to compress images with ".pgm" format by encoding each pixel in the image according to its frequency thus storing it in less number of bits.
 
-When discussing related work, do not forget to include appropriate references.  This is an example of a citation \cite{mirjalili2018gender}. To format the citations properly, put the
-corresponding references into the bibliography.bib file. You can obtain
-BibTeX-formatted references for the "bib" file from Google Scholar 
-(\url{https://scholar.google.com}), for example, by clicking on the 
-double-quote character under a citation and then selecting \mbox{"BibTeX"} as
-shown in Figure \ref{fig:google-scholar-1col} and 
-Figure \ref{fig:google-scholar-2col}.
-
-
-\begin{figure}[t]
+\begin{figure}[H]
 \begin{center}
-   \includegraphics[width=0.8\linewidth]{figures/google-scholar.pdf}
+   \includegraphics[width=0.8\linewidth]{Huffman-tree-Fig5.24.png}
 \end{center}
-   \caption{Example illustrating how to get BibTeX references from
-   Google Scholar as a 1-column figure.}
-\label{fig:google-scholar-1col}
+   \caption{Example of a coded Huffman Tree}
+\label{fig: Huffman Tree}
 \end{figure}
 
-
-\begin{figure*}
-\begin{center}
-   \includegraphics[width=0.8\linewidth]{figures/config-texmaker.png}
-\end{center}
-   \caption{Compiling this document using \emph{TexMaker}.}
-\label{fig:google-scholar-2col}
-\end{figure*}
-
-
 \section{Motivation}
+We were really motivated and enthusiastic about this project cause it helped us learn a lot of new things:
+\begin{enumerate}
+   \item The concept of file compression and how much useful it is.
+   \item How to read/write files using \verb!C++!.
+   \item How to handle command line arguments and flags.
+   \item Storing data in binary files.
+   \item Learned how useful some data structures like hashmaps are.
+   \item How to make user friendly GUI with a descent UI.
+\end{enumerate}
 
-Describe why your project is interesting. E.g., you can describe how your project may have an impact. Or, you may describe the motivation from a personal learning perspective.
 
 \section{Resources}
-
-What tools and libraries have you used.
+We used the \href{https://people.sc.fsu.edu/~jburkardt/c_src/pgmb_io/pgmb_io.html}{pgmb\textunderscore io} library to read and write the pgm file.
+Its written mainly in c, we added more c++ functionalities to make it compatible with our application and we removed the unneeded functions in it.
 
 \section{Challenges and Problems}
-
-Describe the technical problems you had even if you haven't managed to solve. Also describe the problems that challenged you and you could address.
+\begin{enumerate}
+   \item Learning how to use fstream functionalities.
+   \item Learning how to build a GUI.
+   \item Converting data to bitsets.
+\end{enumerate}
+\section{System Block Diagram}
+\begin{figure}[H]
+   \begin{center}
+      \includegraphics[width=1\linewidth]{Block_Diagram.png}
+   \end{center}
+      \caption{System Block Diagram}
+   \label{fig: Block Diagram}
+   \end{figure}
 
 \section{User manual for the system}
 
@@ -114,11 +136,27 @@ Steps to run your programs.
 Screenshots for your running programs
 
 \section{Contributions}
-
-You are expected to share the workload evenly, and every group member is expected to participate in both the experiments and writing.
-
-Clearly indicate what computational and writing task each member of your group participated in.
-
+\begin{enumerate}
+   \item Mostafa Essam: \begin{enumerate}
+      \item Read/writeimagefilesin.pgmformat. 
+      \item Serializing the encoded image and frequency table.
+      \item Deserializing the frequency table.
+      \item Documentation
+   \end{enumerate}
+   \item Habiba Mahmoud: \begin{enumerate}
+      \item  Construct a frequency table from the image. 
+      \item  From the frequency table,construct Huffman tree with the help of heap priority queue (Huffman Encoding).
+      \item Documentation
+   \end{enumerate}
+   \item Mo'men Maged: \begin{enumerate}
+      \item Deserializing the encoded image and frequency table.
+      \item Decoding the encoded image data.
+      \item Arguments flag.
+      \item Report.
+   \end{enumerate}
+   \item Mariam Mohamed Osama: GUI.
+   \item Anas Mohamed Abdelrahman: GUI.
+\end{enumerate}
 
 {\small
 
