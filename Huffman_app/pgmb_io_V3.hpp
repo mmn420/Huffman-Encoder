@@ -67,7 +67,6 @@
 */
 #include <bits/stdc++.h>
 #include "utility.hpp"
-using namespace std;
 //*****************************************************************************
 //
 //                          Function Declarations
@@ -75,13 +74,13 @@ using namespace std;
 //*****************************************************************************
 bool pgmb_check_data(pgm pic);
 //*****************************************************************************
-bool pgmb_read(string input_name, pgm &pic);
-bool pgmb_read_data(ifstream &input, pgm &pic);
-bool pgmb_read_header(ifstream &file_in, pgm &pic);
+bool pgmb_read(std::string input_name, pgm &pic);
+bool pgmb_read_data(std::ifstream &input, pgm &pic);
+bool pgmb_read_header(std::ifstream &file_in, pgm &pic);
 //*****************************************************************************
-bool pgmb_write(string file_out_name, pgm pic);
-bool pgmb_write_data(ofstream &file_out, pgm pic);
-bool pgmb_write_header(ofstream &file_out, pgm pic);
+bool pgmb_write(std::string file_out_name, pgm pic);
+bool pgmb_write_data(std::ofstream &file_out, pgm pic);
+bool pgmb_write_header(std::ofstream &file_out, pgm pic);
 //*****************************************************************************
 //
 //                          Functions Definitions
@@ -112,27 +111,27 @@ bool pgmb_check_data(pgm pic)
 
     if (pic.xsize <= 0)
     {
-        cout << "\n";
-        cout << "PGMB_CHECK_DATA: Error!\n";
-        cout << "  xsize <= 0.\n";
-        cout << "  xsize = " << pic.xsize << "\n";
+        std::cout << "\n";
+        std::cout << "PGMB_CHECK_DATA: Error!\n";
+        std::cout << "  xsize <= 0.\n";
+        std::cout << "  xsize = " << pic.xsize << "\n";
         return true;
     }
 
     if (pic.ysize <= 0)
     {
-        cout << "\n";
-        cout << "PGMB_CHECK_DATA: Error!\n";
-        cout << "  ysize <= 0.\n";
-        cout << "  ysize = " << pic.ysize << "\n";
+        std::cout << "\n";
+        std::cout << "PGMB_CHECK_DATA: Error!\n";
+        std::cout << "  ysize <= 0.\n";
+        std::cout << "  ysize = " << pic.ysize << "\n";
         return true;
     }
 
     if (pic.data.size() <= 0)
     {
-        cout << "\n";
-        cout << "PGMB_CHECK_DATA: Error!\n";
-        cout << " Empty vector.\n";
+        std::cout << "\n";
+        std::cout << "PGMB_CHECK_DATA: Error!\n";
+        std::cout << " Empty vector.\n";
         return true;
     }
 
@@ -140,11 +139,11 @@ bool pgmb_check_data(pgm pic)
     {
         if (pic.maxg < pic.data[i])
         {
-            cout << "\n";
-            cout << "PGMB_CHECK_DATA - Fatal error!\n";
-            cout << "  Data exceeds MAXG = " << pic.maxg << "\n";
-            cout << "  Pixel("
-                 << "," << i << ")=" << pic.data[i] << "\n";
+            std::cout << "\n";
+            std::cout << "PGMB_CHECK_DATA - Fatal error!\n";
+            std::cout << "  Data exceeds MAXG = " << pic.maxg << "\n";
+            std::cout << "  Pixel("
+                      << "," << i << ")=" << pic.data[i] << "\n";
             return true;
         }
     }
@@ -152,7 +151,7 @@ bool pgmb_check_data(pgm pic)
     return false;
 }
 //*****************************************************************************
-bool pgmb_read(string input_name, pgm &pic)
+bool pgmb_read(std::string input_name, pgm &pic)
 //
 //  Purpose:
 //
@@ -175,15 +174,15 @@ bool pgmb_read(string input_name, pgm &pic)
 //
 {
     bool error;
-    ifstream input;
+    std::ifstream input;
 
-    input.open(input_name, ios::binary);
+    input.open(input_name, std::ios::binary);
 
     if (!input.is_open()) // TODO: how (!input) still works
     {
-        cout << "\n";
-        cout << "PGMB_READ: Fatal error!\n";
-        cout << "  Cannot open the input file " << input_name << "\n";
+        std::cout << "\n";
+        std::cout << "PGMB_READ: Fatal error!\n";
+        std::cout << "  Cannot open the input file " << input_name << "\n";
         return true;
     }
     //
@@ -193,9 +192,9 @@ bool pgmb_read(string input_name, pgm &pic)
 
     if (error)
     {
-        cout << "\n";
-        cout << "PGMB_READ: Fatal error!\n";
-        cout << "  PGMB_READ_HEADER failed.\n";
+        std::cout << "\n";
+        std::cout << "PGMB_READ: Fatal error!\n";
+        std::cout << "  PGMB_READ_HEADER failed.\n";
         return true;
     }
     //
@@ -205,9 +204,9 @@ bool pgmb_read(string input_name, pgm &pic)
 
     if (error)
     {
-        cout << "\n";
-        cout << "PGMB_READ: Fatal error!\n";
-        cout << "  PGMB_READ_DATA failed.\n";
+        std::cout << "\n";
+        std::cout << "PGMB_READ: Fatal error!\n";
+        std::cout << "  PGMB_READ_DATA failed.\n";
         return true;
     }
     //
@@ -218,7 +217,7 @@ bool pgmb_read(string input_name, pgm &pic)
     return false;
 }
 //*****************************************************************************
-bool pgmb_read_data(ifstream &input, pgm &pic)
+bool pgmb_read_data(std::ifstream &input, pgm &pic)
 //
 //  Purpose:
 //
@@ -254,10 +253,10 @@ bool pgmb_read_data(ifstream &input, pgm &pic)
             error = input.eof();
             if (error)
             {
-                cout << "\n";
-                cout << "PGMB_READ_DATA - Fatal error!\n";
-                cout << "  End of file reading pixel ("
-                     << i << ", " << j << ") \n";
+                std::cout << "\n";
+                std::cout << "PGMB_READ_DATA - Fatal error!\n";
+                std::cout << "  End of file reading pixel ("
+                          << i << ", " << j << ") \n";
                 return true;
             }
         }
@@ -265,7 +264,7 @@ bool pgmb_read_data(ifstream &input, pgm &pic)
     return false;
 }
 //*****************************************************************************
-bool pgmb_read_header(ifstream &input, pgm &pic)
+bool pgmb_read_header(std::ifstream &input, pgm &pic)
 //
 //  Purpose:
 //
@@ -286,10 +285,10 @@ bool pgmb_read_header(ifstream &input, pgm &pic)
 //
 {
     int fred;
-    string line;
-    string rest;
+    std::string line;
+    std::string rest;
     int step;
-    string word;
+    std::string word;
 
     step = 0;
 
@@ -299,9 +298,9 @@ bool pgmb_read_header(ifstream &input, pgm &pic)
 
         if (input.eof())
         {
-            cout << "\n";
-            cout << "PGMB_READ_HEADER - Fatal error!\n";
-            cout << "  End of file.\n";
+            std::cout << "\n";
+            std::cout << "PGMB_READ_HEADER - Fatal error!\n";
+            std::cout << "  End of file.\n";
             return true;
         }
 
@@ -321,9 +320,9 @@ bool pgmb_read_header(ifstream &input, pgm &pic)
 
             if (!s_eqi(word, "P5"))
             {
-                cout << "\n";
-                cout << "PGMB_READ_HEADER - Fatal error.\n";
-                cout << "  Bad magic number = \"" << word << "\".\n";
+                std::cout << "\n";
+                std::cout << "PGMB_READ_HEADER - Fatal error.\n";
+                std::cout << "  Bad magic number = \"" << word << "\".\n";
                 return true;
             }
             line = rest;
@@ -374,7 +373,7 @@ bool pgmb_read_header(ifstream &input, pgm &pic)
     return false;
 }
 //*****************************************************************************
-bool pgmb_write(string output_name, pgm pic)
+bool pgmb_write(std::string output_name, pgm pic)
 //
 //  Purpose:
 //
@@ -397,17 +396,17 @@ bool pgmb_write(string output_name, pgm pic)
 //
 {
     bool error;
-    ofstream output;
+    std::ofstream output;
     //
     //  Open the file.
     //
-    output.open(output_name, ios::binary);
+    output.open(output_name, std::ios::binary);
 
     if (!output.is_open())
     {
-        cout << "\n";
-        cout << "PGMB_WRITE: Fatal error!\n";
-        cout << "  Cannot open the output file " << output_name << "\n";
+        std::cout << "\n";
+        std::cout << "PGMB_WRITE: Fatal error!\n";
+        std::cout << "  Cannot open the output file " << output_name << "\n";
         return true;
     }
     //
@@ -417,9 +416,9 @@ bool pgmb_write(string output_name, pgm pic)
 
     if (error)
     {
-        cout << "\n";
-        cout << "PGMB_WRITE: Fatal error!\n";
-        cout << "  PGMB_WRITE_HEADER failed.\n";
+        std::cout << "\n";
+        std::cout << "PGMB_WRITE: Fatal error!\n";
+        std::cout << "  PGMB_WRITE_HEADER failed.\n";
         return true;
     }
     //
@@ -429,9 +428,9 @@ bool pgmb_write(string output_name, pgm pic)
 
     if (error)
     {
-        cout << "\n";
-        cout << "PGMB_WRITE: Fatal error!\n";
-        cout << "  PGMB_WRITE_DATA failed.\n";
+        std::cout << "\n";
+        std::cout << "PGMB_WRITE: Fatal error!\n";
+        std::cout << "  PGMB_WRITE_DATA failed.\n";
         return true;
     }
     //
@@ -442,7 +441,7 @@ bool pgmb_write(string output_name, pgm pic)
     return false;
 }
 //*****************************************************************************
-bool pgmb_write_data(ofstream &output, pgm pic)
+bool pgmb_write_data(std::ofstream &output, pgm pic)
 //
 //  Purpose:
 //
@@ -472,7 +471,7 @@ bool pgmb_write_data(ofstream &output, pgm pic)
     return false;
 }
 //*****************************************************************************
-bool pgmb_write_header(ofstream &output, pgm pic)
+bool pgmb_write_header(std::ofstream &output, pgm pic)
 //
 //  Purpose:
 //
@@ -495,10 +494,10 @@ bool pgmb_write_header(ofstream &output, pgm pic)
 //
 {
     output << "P5"
-           << endl
+           << std::endl
            << pic.xsize << " "
-           << pic.ysize  << endl
-           << pic.maxg << endl;
+           << pic.ysize << std::endl
+           << pic.maxg << std::endl;
 
     return false;
 }
