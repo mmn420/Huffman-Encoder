@@ -1,8 +1,15 @@
 #include <bits/stdc++.h>
 #include "utility.hpp"
 #include "pgmb_io_V3.hpp"
-#include "Huffman_encoding.hpp"
+#include "Huffman.hpp"
 using namespace std;
+//**********************************************************************
+
+//*******************************README*********************************************************************
+// To Compress type for example in terminal: ./a.out image_name.pgm
+// To Decompress type for example in terminal: ./a.out -t image_name.frq image_name.enc
+//*******************************README*********************************************************************
+
 //***********************************************************************
 struct fileName
 {
@@ -18,6 +25,10 @@ struct fileName
 //***********************************************************************
 void Compress(pgm &read_pic, string imageNameNoExtension);
 void Decompress(pgm &write_pic, fileName &file_name);
+//***********************************************************************
+
+//                          Main Function
+
 //***********************************************************************
 int main(int argc, char *argv[])
 {
@@ -50,7 +61,7 @@ int main(int argc, char *argv[])
         Compress(read_pic, file_name.imageNameNoExtension);
     }
 
-    
+
     else if (argc == 4)
     {
         int flagPos = -1;
@@ -121,7 +132,6 @@ void Compress(pgm &read_pic, string imageNameNoExtension)
 //***********************************************************************
 void Decompress(pgm &write_pic, fileName &file_name)
 {
-
     Huffman decompressor;
     string encodedData = "";
     deserializePgm(file_name.encoded_pgm, write_pic, encodedData);
