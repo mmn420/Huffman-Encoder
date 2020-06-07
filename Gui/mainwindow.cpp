@@ -57,7 +57,7 @@ void MainWindow::on_pushButton_2_clicked()
 {
     QMessageBox messagebox;
     fileName image_name;
-    file_name= QFileDialog::getOpenFileName(this,"Open a file","../"); //opening file
+    file_name= QFileDialog::getOpenFileName(this,"Open a .pgm file","../"); //opening file
         QMessageBox::information(this,"..",file_name);
        ui->label->setPixmap(file_name); // display chosen image
        QString variable = (file_name);
