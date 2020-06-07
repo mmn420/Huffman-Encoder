@@ -141,6 +141,21 @@ Its written mainly in c, we added more c++ functionalities to make it compatible
    \subsubsection{On Linux}
    Check the \href{https://github.com/sbme-tutorials/sbe201-2020-final-project-huffman-sbe201-2020-team14/blob/master/README.txt}{readme.txt} file attached in the \href{https://github.com/sbme-tutorials/sbe201-2020-final-project-huffman-sbe201-2020-team14}{GitHub repository}.
 \subsection{GUI}
+\begin{enumerate}
+   \item Open Qt creator then choose the option to open a new project.
+   \item Choose the CMakeLists.txt file and configure it.
+   \item Run the code and the GUI window will open.
+   \item For compression: \begin{enumerate}
+      \item Click on the compress button.
+      \item Choose a file with a .pgm format.
+      \item Click open.
+   \end{enumerate}
+   \item For decompression: \begin{enumerate}
+      \item Click on the decompress button.
+      \item Choose 2 files one of them with a .enc format and the other with .frq format.
+      \item After selecting the two files click open.
+   \end{enumerate}
+\end{enumerate}
 
 \section{Results}
 \subsection{Command Line}
@@ -220,6 +235,54 @@ Its written mainly in c, we added more c++ functionalities to make it compatible
          \end{figure}
       
    \subsection{GUI}
+   \begin{enumerate}
+      \item Compression
+   \begin{figure}[H]
+      \begin{center}
+         \includegraphics[width=1\linewidth]{Compression_browse.jpeg}
+      \end{center}
+         \caption{Browsing files to choose a .pgm file}
+      \label{fig: Browse}
+      \end{figure}
+      \begin{figure}[H]
+         \begin{center}
+            \includegraphics[width=1\linewidth]{valid_file.jpeg}
+         \end{center}
+            \caption{You chose a valid file}
+         \label{fig: Valid file}
+         \end{figure}
+         \begin{figure}[H]
+      \begin{center}
+               \includegraphics[width=1\linewidth]{successfull.jpeg}
+            \end{center}
+               \caption{successful compression}
+            \label{fig: Success}
+            \end{figure}
+            \begin{figure}[H]
+               \begin{center}
+                  \includegraphics[width=1\linewidth]{final_window.jpeg}
+               \end{center}
+                  \caption{Final Window}
+               \label{fig: Final window}
+               \end{figure}
+               \item Decompression
+               \begin{figure}[H]
+                  \begin{center}
+                     \includegraphics[width=1\linewidth]{choose_frq_enc.jpeg}
+                  \end{center}
+                     \caption{Decompression Browse}
+                  \label{fig: Decompression Browse}
+                  \end{figure}
+                  \begin{figure}[H]
+                     \begin{center}
+                        \includegraphics[width=1\linewidth]{Image_decompressed.jpeg}
+                     \end{center}
+                        \caption{Image Decompressed message box}
+                     \label{fig: decompressed box}
+                     \end{figure}
+                  \end{enumerate}
+
+
 
 
 
