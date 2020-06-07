@@ -1,5 +1,5 @@
 #include <bits/stdc++.h>
-#include "utility.hpp"
+#include "utility_test.hpp"
 #include "pgmb_io_V3.hpp"
 #include "Huffman.hpp"
 using namespace std;
@@ -118,12 +118,12 @@ void Compress(pgm &read_pic, string imageNameNoExtension)
 {
     unordered_map<int, int> frequencyTable;
     buildFreqTable(read_pic.data, frequencyTable);
-    unordered_map<int, int> tempTable;
+ /*   unordered_map<int, int> tempTable;
     for (int i = 0; i < 256; i++)
         if (frequencyTable.count(i))
             tempTable[i] = frequencyTable[i];
 
-    frequencyTable = tempTable;
+    frequencyTable = tempTable;*/
     Huffman compressor;
     auto codes = compressor.Encode(frequencyTable);
     serializePgm(read_pic, codes, imageNameNoExtension + ".enc");
